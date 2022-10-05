@@ -32,6 +32,16 @@
             });
           };
         in scope.overrideScope' overlay;
+
       defaultPackage = legacyPackages.albatross;
-    });
+
+    }) // {
+      nixosModules.albatross_service = { pkgs, ... }: {
+        imports = [
+          (import modules/albatross_service.nix
+            self.defaultPackage.${pkgs.system})
+        ];
+
+      };
+    };
 }

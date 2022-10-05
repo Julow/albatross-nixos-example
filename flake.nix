@@ -8,13 +8,10 @@
     };
   };
 
-  outputs = { nixpkgs, albatross, ... }@inputs: {
-    nixosConfigurations.test = nixpkgs.lib.nixosSystem rec {
+  outputs = { nixpkgs, ... }@inputs: {
+    nixosConfigurations.test = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {
-        inherit inputs;
-        albatross = albatross.defaultPackage.${system};
-      };
+      specialArgs = inputs;
       modules = [ ./configuration.nix ];
     };
   };
