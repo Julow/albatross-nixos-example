@@ -15,25 +15,19 @@
   };
 
   outputs = { self, nixpkgs, opam-nix, flake-utils, albatross }:
-    flake-utils.lib.eachDefaultSystem (system: rec {
-      legacyPackages = with opam-nix.lib.${system};
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          # Taken from example https://github.com/tweag/opam-nix/blob/main/examples/opam-ed/flake.nix
-          scope = queryToScope { inherit pkgs; } {
-            albatross = "*";
-            ocaml-system = "*";
-          };
-          overlay = self: super: {
-            # Prevent unnecessary dependencies on the resulting derivation
-            albatross = super.albatross.overrideAttrs (_: {
-              removeOcamlReferences = true;
-              postFixup = "rm -rf $out/nix-support";
-            });
-          };
-        in scope.overrideScope' overlay;
-
-      defaultPackage = legacyPackages.albatross;
+    flake-utils.lib.eachDefaultSystem (system: {
+      legacyPackages = let
+        inherit (opam-nix.lib.${system}) buildOpamProject;
+        scope =
+          buildOpamProject { } "albatross" albatross { ocaml-system = "*"; };
+      in scope.overrideScope' (self: super: {
+        # Prevent unnecessary dependencies on the resulting derivation
+        albatross = super.albatross.overrideAttrs (_: {
+          removeOcamlReferences = true;
+          doNixSupport = false;
+        });
+      });
+      defaultPackage = self.legacyPackages.${system}.albatross;
 
     }) // {
       nixosModules.albatross_service = { pkgs, ... }: {
