@@ -10,7 +10,7 @@
   };
   inputs.nixpkgs.url = "nixpkgs";
   inputs.albatross = {
-    url = "github:roburio/albatross";
+    url = "github:Julow/albatross/tls_endpoint_socket";
     flake = false;
   };
 

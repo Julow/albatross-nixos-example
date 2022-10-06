@@ -4,14 +4,27 @@ albatross_pkg:
 let conf = config.services.albatross;
 
 in {
-  options = with lib; {
-    services.albatross = { enable = mkEnableOption "albatross"; };
-  };
+  imports = [
+    (import ./albatross_tls_endpoint.nix albatross_pkg)
+  ];
+
+  options = with lib;
+    with types; {
+      services.albatross = {
+        enable = mkEnableOption "albatross";
+
+        cacert = mkOption {
+          description = "Authority";
+          type = path;
+        };
+
+      };
+    };
 
   config = lib.mkIf conf.enable {
-    systemd.services.albatross_console = {
+    systemd.services.albatross-console = {
       description = "Albatross console daemon (albatross-console)";
-      requires = [ "albatross_console.socket" ];
+      requires = [ "albatross-console.socket" ];
       after = [ "syslog.target" ];
       serviceConfig = {
         Type = "simple";
@@ -24,22 +37,21 @@ in {
       };
     };
 
-    systemd.sockets.albatross_console = {
+    systemd.sockets.albatross-console = {
       description = "Albatross console socket";
-      partOf = [ "albatross_console.service" ];
+      partOf = [ "albatross-console.service" ];
       socketConfig = {
         ListenStream = "%t/albatross/util/console.sock";
         SocketUser = "albatross";
         SocketMode = "0660";
-        Accept = "no";
       };
     };
 
     # Running as root
     systemd.services.albatrossd = {
       description = "Albatross VMM daemon (albatrossd)";
-      requires = [ "albatross_console.socket" "albatrossd.socket" ];
-      after = [ "syslog.target" "albatross_console.service" "network.target" ];
+      requires = [ "albatross-console.socket" "albatrossd.socket" ];
+      after = [ "syslog.target" "albatross-console.service" "network.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "simple";
@@ -70,11 +82,8 @@ in {
         ListenStream = "%t/albatross/util/vmmd.sock";
         SocketGroup = "albatross";
         SocketMode = "0660";
-        Accept = "no";
       };
     };
-
-    networking.firewall.allowedTCPPorts = [ ];
 
     # User and group for albatross services
     users.users.albatross.isNormalUser = true;
