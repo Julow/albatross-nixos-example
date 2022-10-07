@@ -1,12 +1,21 @@
 albatross_pkg:
 { config, lib, pkgs, ... }:
 
-let conf = config.services.albatross;
+let
+  conf = config.services.albatross;
+
+  runtime_dir = "/run/albatross";
+  db_dir = "/var/lib/albatross";
+
+  setup_dirs = pkgs.writeShellScript "albatross-setup-dirs" ''
+    mkdir -p ${db_dir}
+    mkdir -p ${runtime_dir}/fifo
+    chmod 2770 ${runtime_dir}/fifo
+    mkdir -p ${runtime_dir}/util
+  '';
 
 in {
-  imports = [
-    (import ./albatross_tls_endpoint.nix albatross_pkg)
-  ];
+  imports = [ (import ./albatross_tls_endpoint.nix albatross_pkg) ];
 
   options = with lib;
     with types; {
@@ -31,7 +40,7 @@ in {
         User = "albatross";
         Group = "albatross";
         ExecStart = ''
-          ${albatross_pkg}/bin/albatross-console --systemd-socket-activation --tmpdir="%t/albatross/"
+          ${albatross_pkg}/bin/albatross-console --systemd-socket-activation --tmpdir="${runtime_dir}"
         '';
         RestrictAddressFamilies = "AF_UNIX";
       };
@@ -41,7 +50,7 @@ in {
       description = "Albatross console socket";
       partOf = [ "albatross-console.service" ];
       socketConfig = {
-        ListenStream = "%t/albatross/util/console.sock";
+        ListenStream = "${runtime_dir}/util/console.sock";
         SocketUser = "albatross";
         SocketMode = "0660";
       };
@@ -58,15 +67,9 @@ in {
         User = "root";
         Group = "albatross";
         ExecStart = ''
-          ${albatross_pkg}/bin/albatrossd --systemd-socket-activation --tmpdir="%t/albatross/"
+          ${albatross_pkg}/bin/albatrossd --systemd-socket-activation --tmpdir=${runtime_dir} --dbdir=${db_dir} -vv
         '';
-        RuntimeDirectoryPreserve = "yes";
-        RuntimeDirectory = "albatross";
-        ExecStartPre = pkgs.writeShellScript "albatross-start-pre" ''
-          mkdir -p %t/albatross/fifo
-          chmod 2770 %t/albatross/fifo
-          mkdir -p %t/albatross/util
-        '';
+        ExecStartPre = setup_dirs;
         ProtectSystem = "full";
         ProtectHome = true;
         OOMScoreAdjust = "-1000";
@@ -79,7 +82,7 @@ in {
       description = "Albatross daemon socket";
       partOf = [ "albatrossd.service" ];
       socketConfig = {
-        ListenStream = "%t/albatross/util/vmmd.sock";
+        ListenStream = "${runtime_dir}/util/vmmd.sock";
         SocketGroup = "albatross";
         SocketMode = "0660";
       };
@@ -88,5 +91,19 @@ in {
     # User and group for albatross services
     users.users.albatross.isNormalUser = true;
     users.groups.albatross.members = [ "albatross" ];
+
+    # Network
+    networking.bridges.service.interfaces = [ ];
+    networking.interfaces.service = {
+      ipv4.addresses = [{
+        address = "10.0.0.1";
+        prefixLength = 24;
+      }];
+    };
+    networking.nat = {
+      enable = true;
+      internalInterfaces = [ "service" ];
+      externalInterface = "eth0";
+    };
   };
 }

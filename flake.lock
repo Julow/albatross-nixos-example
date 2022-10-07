@@ -11,7 +11,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-nUjLxvkRkKGf/l1pACe967LTO8bORRyPqjjJ8VjUU6I=",
+        "narHash": "sha256-0jqhvB50fI4PPRwCUZZWgWgmh76cT76GYz2EBo5s/bk=",
         "path": "./albatross",
         "type": "path"
       },
@@ -23,15 +23,16 @@
     "albatross_2": {
       "flake": false,
       "locked": {
-        "lastModified": 1664132855,
-        "narHash": "sha256-jmYSeIeSo1KpwhrALNjK1loPnFhSKa1q13kd70cJCcs=",
-        "owner": "roburio",
+        "lastModified": 1665061359,
+        "narHash": "sha256-loNLwKnkX68cpptVBeTypOGISxajM6f6BHQKIioHsaQ=",
+        "owner": "Julow",
         "repo": "albatross",
-        "rev": "9b1af1b42d634e15b8ba4abccb890563ba7cbb33",
+        "rev": "b94826005a78e9c01eaeaa06000636e230927d2d",
         "type": "github"
       },
       "original": {
-        "owner": "roburio",
+        "owner": "Julow",
+        "ref": "tls_endpoint_socket",
         "repo": "albatross",
         "type": "github"
       }
