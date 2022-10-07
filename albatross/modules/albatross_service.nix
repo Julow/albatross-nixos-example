@@ -1,5 +1,5 @@
 albatross_pkg:
-{ config, lib, pkgs, ... }:
+{ config, options, lib, pkgs, ... }:
 
 let
   conf = config.services.albatross;
@@ -7,9 +7,7 @@ let
   runtime_dir = "/run/albatross";
   db_dir = "/var/lib/albatross";
 
-  solo5 = pkgs.solo5.overrideAttrs (_: {
-    doCheck = false;
-  });
+  solo5 = pkgs.solo5.overrideAttrs (_: { doCheck = false; });
 
   setup_dirs = pkgs.writeShellScript "albatross-setup-dirs" ''
     mkdir -p ${db_dir}
@@ -30,6 +28,12 @@ in {
         cacert = mkOption {
           description = "Authority";
           type = path;
+        };
+
+        forwardPorts = mkOption {
+          description =
+            "Forward ports to the NAT the unikernels are configured to use. Accept the same input as 'networking.nat.forwardPorts'.";
+          type = options.networking.nat.forwardPorts.type;
         };
 
       };
@@ -97,7 +101,7 @@ in {
     users.users.albatross.isNormalUser = true;
     users.groups.albatross.members = [ "albatross" ];
 
-    # Network
+    # Network bridges
     networking.bridges.service.interfaces = [ ];
     networking.interfaces.service = {
       ipv4.addresses = [{
@@ -105,10 +109,13 @@ in {
         prefixLength = 24;
       }];
     };
+
+    # Network interface
     networking.nat = {
       enable = true;
       internalInterfaces = [ "service" ];
       externalInterface = "eth0";
+      inherit (conf) forwardPorts;
     };
   };
 }
