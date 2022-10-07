@@ -7,8 +7,13 @@ let
   runtime_dir = "/run/albatross";
   db_dir = "/var/lib/albatross";
 
+  solo5 = pkgs.solo5.overrideAttrs (_: {
+    doCheck = false;
+  });
+
   setup_dirs = pkgs.writeShellScript "albatross-setup-dirs" ''
     mkdir -p ${db_dir}
+    ln -sfT ${solo5}/bin/solo5-hvt ${db_dir}/solo5-hvt
     mkdir -p ${runtime_dir}/fifo
     chmod 2770 ${runtime_dir}/fifo
     mkdir -p ${runtime_dir}/util
