@@ -2,7 +2,6 @@
   "nodes": {
     "albatross": {
       "inputs": {
-        "albatross": "albatross_2",
         "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
@@ -10,29 +9,15 @@
         "opam-nix": "opam-nix"
       },
       "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-qFxJ3nfEH8XQbjQTvghJIy5p7GPzZVcHJyWAhOPsavc=",
-        "path": "./albatross",
-        "type": "path"
-      },
-      "original": {
-        "path": "./albatross",
-        "type": "path"
-      }
-    },
-    "albatross_2": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1665061359,
-        "narHash": "sha256-loNLwKnkX68cpptVBeTypOGISxajM6f6BHQKIioHsaQ=",
+        "lastModified": 1665249202,
+        "narHash": "sha256-y7mmZLG5cM7ODnRclOKp1SiyYS8lg+tWNJAtFWNFvcc=",
         "owner": "Julow",
         "repo": "albatross",
-        "rev": "b94826005a78e9c01eaeaa06000636e230927d2d",
+        "rev": "f9323088a0467a0041577526502cd37734dae053",
         "type": "github"
       },
       "original": {
         "owner": "Julow",
-        "ref": "tls_endpoint_socket",
         "repo": "albatross",
         "type": "github"
       }
@@ -115,15 +100,15 @@
         "opam2json": "opam2json"
       },
       "locked": {
-        "lastModified": 1664996120,
-        "narHash": "sha256-sjKYtQgUJSXXX5hJuhJn7cpm8BXuppWJ+cubRcn+m50=",
-        "owner": "Julow",
+        "lastModified": 1665180241,
+        "narHash": "sha256-1VHXIFPy2B4q4hOWH3Koy6r8lWDvmroymMfCX0WQAVk=",
+        "owner": "tweag",
         "repo": "opam-nix",
-        "rev": "085a80b8d249365b13e7f8cbcadb55d02d40b4bd",
+        "rev": "2d2543dd67464345418fd81d9800ebe56a6f6d0c",
         "type": "github"
       },
       "original": {
-        "owner": "Julow",
+        "owner": "tweag",
         "repo": "opam-nix",
         "type": "github"
       }

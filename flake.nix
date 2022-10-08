@@ -3,7 +3,7 @@
   inputs = {
     nixpkgs.url = "nixpkgs";
     albatross = {
-      url = "path:./albatross";
+      url = "github:Julow/albatross";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
