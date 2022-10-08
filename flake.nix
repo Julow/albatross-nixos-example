@@ -4,7 +4,8 @@
     nixpkgs.url = "nixpkgs";
     albatross = {
       url = "github:Julow/albatross";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows =
+        "nixpkgs"; # Avoid evaluating two different versions of nixpkgs
     };
   };
 

@@ -17,19 +17,19 @@
       cert = ./server.pem;
       # Configure the server's private key
       # This is not ideal: The key is copied into the Nix store, which is
-      # readable by all users on the server and on the developper machine.
+      # readable by all users on the server and on the developer machine.
       private_key = ./server.key;
     };
 
     # Forward some ports bind by unikernels
     forwardPorts = [
       {
-        destination = "10.0.0.2:8080";
+        destination = "10.0.0.2:80";
         proto = "tcp";
         sourcePort = 8080;
       }
       {
-        destination = "10.0.0.2:4433";
+        destination = "10.0.0.2:443";
         proto = "tcp";
         sourcePort = 4433;
       }
