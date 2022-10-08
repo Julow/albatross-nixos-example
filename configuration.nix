@@ -24,12 +24,12 @@
     # Forward some ports bind by unikernels
     forwardPorts = [
       {
-        destination = "10.0.0.2:80";
+        destination = "10.0.0.2:8080";
         proto = "tcp";
         sourcePort = 8080;
       }
       {
-        destination = "10.0.0.2:443";
+        destination = "10.0.0.2:4433";
         proto = "tcp";
         sourcePort = 4433;
       }
