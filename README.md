@@ -7,7 +7,7 @@ The TLS endpoint is enabled and ports `8080` and `4433` are forwarded to the uni
 
 The TLS endpoint accepts commands from the internet to deploy or kill unikernels.
 It needs `server.pem` and `server.key` to authenticate to clients and `cacert.pem` to authenticate clients. The client needs `ca_key.key` and `cacert.pem`.
-The public and private keys are generated using:
+Examples of public and private keys are already present in the repository, you can generate new keys using:
 
 ```sh
 nix shell github:Julow/albatross -c albatross-provision-ca generate ca_key ca_db
