@@ -30,7 +30,7 @@ Albatross should be running and can be controled on port `1025` using `albatross
 Download the latest version of `https.hvt` from https://builds.robur.coop/job/static-website and deploy it:
 
 ```sh
-curl -LO https://builds.robur.coop/job/static-website/build/85ffb013-476a-41d2-b993-d6998f2c76fa/f/bin/https.hvt
+curl -LO https://builds.robur.coop/job/static-website/build/latest/f/bin/https.hvt
 ```
 
 ```sh
