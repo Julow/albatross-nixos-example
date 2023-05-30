@@ -3,7 +3,7 @@
   inputs = {
     nixpkgs.url = "nixpkgs";
     albatross = {
-      url = "github:Julow/albatross";
+      url = "github:roburio/albatross";
       inputs.nixpkgs.follows =
         "nixpkgs"; # Avoid evaluating two different versions of nixpkgs
     };
