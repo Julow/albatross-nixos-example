@@ -10,7 +10,7 @@ It needs `server.pem` and `server.key` to authenticate to clients and `cacert.pe
 Examples of public and private keys are already present in the repository, you can generate new keys using:
 
 ```sh
-nix shell github:Julow/albatross -c albatross-provision-ca generate ca_key ca_db
+nix shell github:Julow/albatross -c albatross-client generate ca_key ca_db
 ```
 
 Build a VM running the example configuration:
