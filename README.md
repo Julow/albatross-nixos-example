@@ -34,7 +34,7 @@ curl -LO https://builds.robur.coop/job/static-website/build/latest/f/bin/https.h
 ```
 
 ```sh
-nix shell github:Julow/albatross -c albatross-client-bistro create --force \
+nix shell github:Julow/albatross -c albatross-client create --force \
   --ca=./cacert.pem --ca-key=./ca_key.key --server-ca=./cacert.pem \
   --net=service --arg="--ipv4-gateway=10.0.0.1" \
   --arg="--ipv4=10.0.0.2/24" \
@@ -54,7 +54,7 @@ host [vm: :https]: success: created VM
 The logs can be viewed with:
 
 ```sh
-nix shell github:Julow/albatross -c albatross-client-bistro console https \
+nix shell github:Julow/albatross -c albatross-client console https \
   --ca=./cacert.pem --ca-key=./ca_key.key --server-ca=./cacert.pem
 ```
 
